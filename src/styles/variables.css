@@ -1,0 +1,42 @@
+:root {
+  --blue-60: #0f62fe;
+  --blue-70: #0043ce;
+  --blue-hover: #0050e6;
+  --blue-40: #78a9ff;
+  --blue-20: #d0e2ff;
+  --blue-30: #a6c8ff;
+  --gray-100: #161616;
+  --gray-90: #262626;
+  --gray-80: #393939;
+  --gray-70: #525252;
+  --gray-60: #6f6f6f;
+  --gray-50: #8d8d8d;
+  --gray-40: #a8a8a8;
+  --gray-30: #c6c6c6;
+  --gray-20: #e0e0e0;
+  --gray-10: #f4f4f4;
+  --gray-hover: #e8e8e8;
+  --white: #ffffff;
+  --green-tag-bg: #defbe6;
+  --green-tag-fg: #0e6027;
+  --green-50: #24a148;
+  --yellow-tag-bg: #fcf4d6;
+  --yellow-tag-fg: #8e6a00;
+  --purple-tag-bg: #e8daff;
+  --purple-tag-fg: #6929c4;
+  --magenta-tag-bg: #ffd6e8;
+  --magenta-tag-fg: #9f1853;
+  --font-sans: var(--font-ibm-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-ibm-mono), ui-monospace, monospace;
+  --ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --pad: 32px;
+  --header-h: 97px;
+}
+
+@media (max-width: 960px) {
+  :root { --header-h: 64px; }
+}
+
+@media (max-width: 672px) {
+  :root { --pad: 16px; }
+}
