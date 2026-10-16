@@ -1,45 +1,44 @@
-import { articles, PRODUCT_CATEGORIES } from "@/lib/content";
+import { articles, products } from "@/lib/content";
 
-const categoryBrands: Record<string, string> = {
-  Chillers: "Trane · Daikin",
-  "VRF / VRV": "Daikin · LG",
-  "Air handling units": "Kruger · Trane",
-  "Fan coil units": "Daikin · Trane",
-  "Split & cassette": "Daikin · LG",
-  "Ventilation fans": "Kruger",
-  "Ducting & diffusers": "DP",
-  "Controls & BMS": "LG · Trane",
-};
+const productsHref = (category: string) => `/products?cat=${encodeURIComponent(category)}`;
+const CHILLERS_HREF = productsHref("Chillers");
+const INDOOR_HREF = productsHref("VRV / VRF indoor units");
+
+function productGroup(category: string, shape: "tall" | "wide") {
+  return {
+    title: category,
+    shape,
+    href: productsHref(category),
+    items: products
+      .filter((product) => product.category === category)
+      .map((product, index) => ({
+        name: product.name,
+        image: product.image,
+        index: String(index + 1).padStart(2, "0"),
+      })),
+  };
+}
 
 export function getHomeContent() {
   const previewIds = ["best-hvac-contractor", "hvac-expo-2026", "hospital-handover"];
   return {
     slides: [
-      { image: "Company — wide banner image (1920×720)", eyebrow: "Company HVAC — About us", title: "Turnkey climate systems, designed to installed.", body: "Design consultancy, supply, installation and maintenance for commercial, industrial and residential projects.", href: "/about", cta: "About the company" },
-      { image: "Daikin — wide banner image", eyebrow: "Daikin — VRV / VRF systems", title: "VRV systems for large-scale comfort.", body: "Variable refrigerant flow with precise zoning and high seasonal efficiency for offices, towers and hotels.", href: "/products?cat=VRF%20%2F%20VRV", cta: "View Daikin range" },
-      { image: "LG — wide banner image", eyebrow: "LG — Inverter systems", title: "Multi V inverter technology.", body: "Energy-saving inverter systems and smart controls for retail, hospitality and commercial buildings.", href: "/products", cta: "View LG range" },
-      { image: "Kruger — wide banner image", eyebrow: "Kruger — Ventilation", title: "Ventilation that moves air, quietly.", body: "Centrifugal and axial fans and air handling units engineered for demanding environments.", href: "/products?cat=Ventilation%20fans", cta: "View Kruger range" },
-      { image: "Trane — wide banner image", eyebrow: "Trane — Chillers", title: "Chillers built for critical loads.", body: "Central plant chillers and controls for hospitals, data centres and towers.", href: "/products?cat=Chillers", cta: "View Trane range" },
+      { image: "/images/dealers/daikin-japan.png", fit: "contain", alt: "Daikin, Japan", eyebrow: "Daikin — Japan", title: "A pioneer in climate control since 1924.", body: "Founded in Osaka, Japan in 1924, Daikin became a pioneer in climate control solutions, especially air conditioning technology.", href: INDOOR_HREF, cta: "View Daikin range" },
+      { image: "/images/dealers/lg-south-korea.png", fit: "contain", alt: "LG, South Korea", eyebrow: "LG — South Korea", title: "Life's Good since 1958.", body: "Starting out as GoldStar in 1958, LG air conditioners are known for their energy efficiency, innovative features and reliable performance.", href: "/products", cta: "View LG range" },
+      { image: "/images/dealers/db-usa.png", fit: "contain", alt: "Dunham-Bush, USA", eyebrow: "Dunham-Bush — USA", title: "HVAC innovation since 1894.", body: "Dunham-Bush introduced screw compressors to the HVAC industry in 1964 and now manufactures from its plant in Malaysia.", href: CHILLERS_HREF, cta: "View Dunham-Bush range" },
     ],
     brands: [
-      { name: "Daikin", image: "Daikin image", body: "Split, VRV and ducted systems for residential and commercial buildings.", href: "/products" },
-      { name: "LG", image: "LG image", body: "Multi V VRF and commercial air conditioning with smart controls.", href: "/products" },
-      { name: "Trane", image: "Trane image", body: "Chillers, rooftop units and building management systems.", href: "/products" },
-      { name: "Kruger", image: "Kruger image", body: "Centrifugal and axial fans, and air handling units.", href: "/products" },
-      { name: "DP", image: "DP image", body: "Ducting, grilles, diffusers and dampers.", href: "/products" },
-      { name: "Company services", image: "Services image", body: "Design consultancy, installation and annual maintenance contracts.", href: "/about" },
+      { name: "Daikin", image: "/images/dealers/daikin-japan.png", fit: "contain", alt: "Daikin, Japan", body: "Founded in Osaka, Japan in 1924, Daikin is a pioneer in climate control solutions, especially air conditioning technology.", href: INDOOR_HREF, cta: "View range" },
+      { name: "LG", image: "/images/dealers/lg-south-korea.png", fit: "contain", alt: "LG, South Korea", body: "Starting out as GoldStar in South Korea in 1958, LG air conditioners are known for energy efficiency, innovative features and reliable performance.", href: "/products", cta: "View range" },
+      { name: "Dunham-Bush", image: "/images/dealers/db-usa.png", fit: "contain", alt: "Dunham-Bush, USA", body: "Formed in the USA in 1894, Dunham-Bush introduced screw compressors to the HVAC industry in 1964 and now manufactures in Malaysia.", href: CHILLERS_HREF, cta: "View range" },
     ],
     stats: [
-      { value: "1,200+", label: "Projects delivered" },
-      { value: "85,000", label: "Tons of refrigeration installed" },
-      { value: "350", label: "Engineers & technicians" },
+      { value: "20+", label: "Years of HVAC experience" },
+      { value: "25+", label: "Featured projects across Bangladesh" },
+      { value: "6", label: "Dealer sales & project awards" },
+      { value: "3", label: "Authorised brands — Daikin, LG, Dunham-Bush" },
     ],
-    categories: PRODUCT_CATEGORIES.map((name, index) => ({
-      name,
-      brands: categoryBrands[name],
-      index: String(index + 1).padStart(2, "0"),
-      href: `/products?cat=${encodeURIComponent(name)}`,
-    })),
+    productRange: [productGroup("Chillers", "tall"), productGroup("VRV / VRF indoor units", "wide")],
     references: [
       { name: "City Business Tower", summary: "Commercial · VRV system, 42 floors", image: "City Business Tower photo" },
       { name: "General Hospital Wing B", summary: "Healthcare · Chiller plant & AHUs", image: "General Hospital Wing B photo" },

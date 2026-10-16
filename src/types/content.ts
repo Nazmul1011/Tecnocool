@@ -1,12 +1,13 @@
+export type ProductSpec = { label: string; value: string };
+
 export type Product = {
   id: string;
   name: string;
   brand: string;
   category: string;
-  model: string;
-  capacity: number;
-  unit: string;
-  refrigerant: string;
+  image: string;
+  summary: string;
+  specs: [ProductSpec, ProductSpec];
   applications: string[];
 };
 

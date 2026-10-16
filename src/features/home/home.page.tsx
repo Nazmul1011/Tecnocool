@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
@@ -8,13 +9,15 @@ import { cx } from "@/lib/cx";
 import { AwardsEvents } from "./components/awards-events";
 import { HeroCarousel } from "./components/hero-carousel";
 import { LiveSites } from "./components/live-sites";
+import { ProductCarousel } from "./components/product-carousel";
 import { ReferenceProjects } from "./components/reference-projects";
 import styles from "./home.module.css";
 import { useHome } from "./useHome";
 
 export default function HomePage() {
   const home = useHome();
-  const loop = [...home.brands, ...home.brands];
+  // Six copies so the short brand list still fills wide screens; the track scrolls by half.
+  const loop = Array.from({ length: 6 }, () => home.brands).flat();
 
   return (
     <>
@@ -47,11 +50,18 @@ export default function HomePage() {
                 aria-hidden={index >= home.brands.length}
                 tabIndex={index >= home.brands.length ? -1 : undefined}
               >
-                <Placeholder label={brand.image} />
+                <Image
+                  className={cx(styles, "brand-img", brand.fit)}
+                  src={brand.image}
+                  alt={brand.alt}
+                  width={640}
+                  height={400}
+                  sizes="320px"
+                />
                 <div className={styles.body}>
                   <span className={styles.name}>{brand.name}</span>
                   <p>{brand.body}</p>
-                  <span className={styles.more}>View range →</span>
+                  <span className={styles.more}>{brand.cta} →</span>
                 </div>
               </Link>
             ))}
@@ -61,7 +71,7 @@ export default function HomePage() {
 
       <section className={styles["stats-band"]}>
         <div className={cx(styles, "eyebrow", "stats-kicker")}>02 — Impact</div>
-        <h2 className={cx(styles, "h-section", "stats-title")}>Engineering comfort at scale since 1998.</h2>
+        <h2 className={cx(styles, "h-section", "stats-title")}>Engineering comfort across Bangladesh since 2003.</h2>
         <div className={styles["stats-grid"]}>
           {home.stats.map((stat) => (
             <div key={stat.label} className={styles.stat}>
@@ -76,25 +86,42 @@ export default function HomePage() {
         <div className="section-head">
           <div>
             <div className="eyebrow">03 — Products</div>
-            <h2 className="h-section">Product categories</h2>
+            <h2 className="h-section">Our product range</h2>
           </div>
           <Link href="/products" className="link-quiet">View all products →</Link>
         </div>
-        <div className="grid grid-auto-240">
-          {home.categories.map((category) => (
-            <Link key={category.name} className={styles["cat-card"]} href={category.href}>
-              <div className={styles["cat-top"]}>
-                <span>{category.index}</span>
-                <span>→</span>
+        {home.productRange.map((group) =>
+          group.shape === "wide" ? (
+            <ProductCarousel key={group.title} group={group} />
+          ) : (
+            <div key={group.title} className={styles["range-group"]}>
+              <div className={cx(styles, "eyebrow", "range-title")}>
+                {group.title} · {group.items.length} models
               </div>
-              <Placeholder label="Product image" />
-              <div className={styles["cat-bottom"]}>
-                <div className={styles["cat-name"]}>{category.name}</div>
-                <div className={styles["cat-sub"]}>{category.brands}</div>
+              <div className="grid grid-auto-240">
+                {group.items.map((item) => (
+                  <Link key={item.name} className={styles["cat-card"]} href={group.href}>
+                    <div className={styles["cat-top"]}>
+                      <span>{item.index}</span>
+                      <span>→</span>
+                    </div>
+                    <Image
+                      className={cx(styles, "cat-img", group.shape)}
+                      src={item.image}
+                      alt={item.name}
+                      width={480}
+                      height={600}
+                      sizes="(max-width: 672px) 100vw, 320px"
+                    />
+                    <div className={styles["cat-bottom"]}>
+                      <div className={styles["cat-name"]}>{item.name}</div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </Link>
-          ))}
-        </div>
+            </div>
+          ),
+        )}
       </section>
 
       <ReferenceProjects items={home.references} />

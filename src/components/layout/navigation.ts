@@ -8,18 +8,17 @@ export type Menu = {
   href: string;
   all: string;
   items: MenuItem[];
-  feature: [string, string, string];
+  feature: [label: string, title: string, href: string, image?: string];
 };
 
-const productCategories = [
-  ["Chillers", "Trane · Daikin"],
-  ["VRF / VRV", "Daikin · LG"],
-  ["Air handling units", "Kruger · Trane"],
-  ["Fan coil units", "Daikin · Trane"],
-  ["Split & cassette", "Daikin · LG"],
-  ["Ventilation fans", "Kruger"],
-  ["Ducting & diffusers", "DP"],
-  ["Controls & BMS", "LG · Trane"],
+// [label, summary, products page query] — cat must match PRODUCT_CATEGORIES in lib/content.
+const productLinks = [
+  ["Chillers", "Dunham-Bush · 9 models", "cat=Chillers"],
+  ["VRV / VRF indoor units", "Daikin · 7 models", `cat=${encodeURIComponent("VRV / VRF indoor units")}`],
+  ["Centrifugal chillers", "Water-cooled & magnetic bearing", "q=centrifugal"],
+  ["Screw chillers", "Air-cooled & water-cooled", "q=screw"],
+  ["Ceiling cassettes", "Round flow & double flow", "q=cassette"],
+  ["Ducted units", "Ceiling duct & slim duct", "q=duct"],
 ] as const;
 
 const projectSectors = [
@@ -34,30 +33,31 @@ const projectSectors = [
 export const menus: Record<NavKey, Menu> = {
   about: {
     label: "About us",
-    intro: "Engineering better air for every building since 1998.",
+    intro: "The art of air — 20+ years of HVAC experience in Bangladesh.",
     href: "/about",
     all: "About the company",
     items: [
       { name: "Company profile", summary: "Who we are and what we do", href: "/about#overview" },
       { name: "Mission & values", summary: "What drives our work", href: "/about#values" },
-      { name: "History", summary: "Milestones since 1998", href: "/about#history" },
+      { name: "History", summary: "20+ years of HVAC systems", href: "/about#history" },
       { name: "Leadership", summary: "The team behind every project", href: "/about#team" },
-      { name: "Partners & certifications", summary: "Daikin, LG, Trane, Kruger, DP", href: "/about#partners" },
+      { name: "Partners & certifications", summary: "Daikin, LG, Dunham-Bush", href: "/about#partners" },
       { name: "Careers", summary: "Join our engineering team", href: "/about" },
     ],
     feature: ["Company profile", "Download our company profile and capability statement", "/about"],
   },
   products: {
     label: "Products",
-    intro: "Complete HVAC systems from leading brands.",
+    intro: "Authorised dealer for Daikin, LG and Dunham-Bush.",
     href: "/products",
     all: "All products",
-    items: productCategories.map(([name, summary]) => ({
-      name,
-      summary,
-      href: `/products?cat=${encodeURIComponent(name)}`,
-    })),
-    feature: ["New product", "Daikin VRV 5 heat pump with R32 refrigerant", "/products"],
+    items: productLinks.map(([name, summary, query]) => ({ name, summary, href: `/products?${query}` })),
+    feature: [
+      "Featured product",
+      "Magnetic bearing centrifugal chiller",
+      "/products?q=magnetic",
+      "/images/products/chillers/magnetic-bearing-centrifugal-chiller.png",
+    ],
   },
   projects: {
     label: "Projects",
@@ -69,7 +69,7 @@ export const menus: Record<NavKey, Menu> = {
       summary,
       href: `/projects?sector=${encodeURIComponent(name)}`,
     })),
-    feature: ["Featured project", "General Hospital Wing B — chiller plant & AHUs", "/projects"],
+    feature: ["Featured project", "QA Tower, Banani — 417 TR Daikin VRV system", "/projects"],
   },
   news: {
     label: "News & events",
@@ -84,9 +84,10 @@ export const menus: Record<NavKey, Menu> = {
       { name: "Newsletter", summary: "Get updates by email", href: "/news#newsletter" },
     ],
     feature: [
-      "Award · 2026-09-18",
-      "Named Best HVAC Contractor at the Regional Building Awards",
-      "/news/best-hvac-contractor",
+      "Award · 2024",
+      "Best Project Award 2024",
+      "/news?tab=Awards",
+      "/images/certificates/daikin-dealer-certificates.png",
     ],
   },
 };

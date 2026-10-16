@@ -28,7 +28,7 @@
   text-decoration: none;
 }
 .logo:hover { color: var(--gray-100); text-decoration: none; }
-.logo-mark { width: 32px; height: 32px; background: var(--blue-60); flex: none; }
+.logo-mark { width: 40px; height: 40px; flex: none; }
 .logo-text { font-size: 18px; font-weight: 600; white-space: nowrap; }
 .logo-text span { font-weight: 300; }
 .main-nav {
@@ -147,6 +147,7 @@
 }
 .mega-feature:hover { background: var(--gray-10); color: var(--gray-100); text-decoration: none; }
 .mega-feature :global(.img-ph) { aspect-ratio: 16/10; height: auto; }
+.feature-img { width: 100%; height: auto; aspect-ratio: 16/10; object-fit: contain; padding: 8px; background: var(--gray-10); }
 .menu-btn {
   display: none;
   width: 48px;

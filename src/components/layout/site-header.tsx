@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -57,15 +58,22 @@ export function SiteHeader() {
   return (
     <header className={styles["site-header"]} onMouseLeave={() => setOpenMenu(null)}>
       <div className={styles.topbar}>
-        <span>info@company.com</span>
-        <span>+00 000 000 0000</span>
-        <span>EN / AR</span>
+        <span>technocool.bd@gmail.com</span>
+        <span>+8801762625960-99</span>
+        <span>Dhaka, Bangladesh</span>
       </div>
       <div className={styles.bar}>
         <Link className={styles.logo} href="/" onMouseEnter={() => setOpenMenu(null)}>
-          <span className={styles["logo-mark"]} />
+          <Image
+            className={styles["logo-mark"]}
+            src="/images/tecnocool_logo.jpeg"
+            alt=""
+            width={40}
+            height={40}
+            priority
+          />
           <span className={styles["logo-text"]}>
-            Company <span>HVAC</span>
+            Techno Cool <span>Associates</span>
           </span>
         </Link>
         <nav className={styles["main-nav"]}>
@@ -150,7 +158,18 @@ export function SiteHeader() {
               ))}
             </div>
             <Link className={styles["mega-feature"]} href={menu.feature[2]}>
-              <Placeholder label="Featured image" />
+              {menu.feature[3] ? (
+                <Image
+                  className={styles["feature-img"]}
+                  src={menu.feature[3]}
+                  alt={menu.feature[1]}
+                  width={1086}
+                  height={1448}
+                  sizes="320px"
+                />
+              ) : (
+                <Placeholder label="Featured image" />
+              )}
               <span className="eyebrow blue">{menu.feature[0]}</span>
               <span>{menu.feature[1]}</span>
             </Link>
@@ -192,8 +211,8 @@ export function SiteHeader() {
           Get a quote <span>→</span>
         </Link>
         <div className={styles["drawer-contact"]}>
-          <span>info@company.com</span>
-          <span>+00 000 000 0000</span>
+          <span>technocool.bd@gmail.com</span>
+          <span>+8801762625960-99</span>
         </div>
       </nav>
     </header>

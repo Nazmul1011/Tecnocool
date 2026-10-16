@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { APPLICATIONS, BRANDS, PRODUCT_CATEGORIES } from "@/lib/content";
 import { listProducts } from "./product.service";
 
-export type ProductSort = "name" | "capAsc" | "capDesc";
+export type ProductSort = "name" | "nameDesc";
 
 const categories = ["All", ...PRODUCT_CATEGORIES];
 
@@ -34,12 +34,10 @@ export function useProducts() {
   const list = inCategory
     .filter((product) => !brands.length || brands.includes(product.brand))
     .filter((product) => !applications.length || product.applications.some((item) => applications.includes(item)))
-    .filter((product) => `${product.name} ${product.model}`.toLowerCase().includes(query.toLowerCase()))
-    .sort((a, b) => {
-      if (sort === "capAsc") return a.capacity - b.capacity;
-      if (sort === "capDesc") return b.capacity - a.capacity;
-      return a.name.localeCompare(b.name);
-    });
+    .filter((product) =>
+      `${product.name} ${product.brand} ${product.category}`.toLowerCase().includes(query.toLowerCase()),
+    )
+    .sort((a, b) => (sort === "nameDesc" ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name)));
 
   const clearFilters = () => {
     setCategory("All");
@@ -51,7 +49,7 @@ export function useProducts() {
   return {
     products,
     categories,
-    brands: BRANDS,
+    brands: BRANDS.filter((brand) => products.some((product) => product.brand === brand)),
     applications: APPLICATIONS,
     category,
     setCategory,

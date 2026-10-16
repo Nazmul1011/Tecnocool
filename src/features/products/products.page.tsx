@@ -1,14 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Button } from "@/components/ui/button";
-import { Placeholder } from "@/components/ui/placeholder";
 import { Tag } from "@/components/ui/tag";
 import { cx } from "@/lib/cx";
 import styles from "./products.module.css";
-import { formatCapacity } from "./product.service";
 import { useProducts } from "./useProducts";
 
 function ProductsScreen() {
@@ -29,7 +28,7 @@ function ProductsScreen() {
         </div>
         <div className={styles.intro}>
           <h1 className="h-display">Products</h1>
-          <p>Chillers, VRF, air handling, ventilation and controls from Daikin, LG, Trane, Kruger and DP.</p>
+          <p>Chillers and VRV / VRF indoor units, supplied and installed as an authorised dealer for Daikin, LG and Dunham-Bush.</p>
         </div>
         <div className={styles["cat-tiles"]}>
           {catalog.categories.map((category) => {
@@ -79,12 +78,11 @@ function ProductsScreen() {
           <div className={styles.toolbar}>
             <label className={cx(styles, "search-field", "search")}>
               <SearchIcon size={16} fill="#525252" />
-              <input value={catalog.query} onChange={(event) => catalog.setQuery(event.target.value)} placeholder="Search by name or model" />
+              <input value={catalog.query} onChange={(event) => catalog.setQuery(event.target.value)} placeholder="Search by name, brand or type" />
             </label>
             <select className={styles.sort} value={catalog.sort} onChange={(event) => catalog.setSort(event.target.value as typeof catalog.sort)}>
               <option value="name">Sort: Name A–Z</option>
-              <option value="capAsc">Capacity: low to high</option>
-              <option value="capDesc">Capacity: high to low</option>
+              <option value="nameDesc">Sort: Name Z–A</option>
             </select>
           </div>
           <div className={styles.meta}>
@@ -109,23 +107,27 @@ function ProductsScreen() {
             {catalog.list.map((product) => (
               <article key={product.id} className={styles["product-card"]}>
                 <div className={styles.media}>
-                  <Placeholder label="Product image" />
+                  <Image
+                    className={styles["product-img"]}
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 672px) 100vw, 320px"
+                  />
                   <Tag label={product.brand} tone="blue" />
                 </div>
                 <div className={styles["card-copy"]}>
                   <span className="muted" style={{ fontSize: 12 }}>{product.category}</span>
                   <span className={styles["product-name"]}>{product.name}</span>
-                  <span className={cx(styles, "mono", "model")}>{product.model}</span>
+                  <span className={styles.summary}>{product.summary}</span>
                 </div>
                 <div className={styles.specs}>
-                  <div>
-                    <div className="muted" style={{ fontSize: 12 }}>Capacity</div>
-                    <div style={{ fontSize: 14 }}>{formatCapacity(product)}</div>
-                  </div>
-                  <div>
-                    <div className="muted" style={{ fontSize: 12 }}>Refrigerant</div>
-                    <div style={{ fontSize: 14 }}>{product.refrigerant}</div>
-                  </div>
+                  {product.specs.map((spec) => (
+                    <div key={spec.label}>
+                      <div className="muted" style={{ fontSize: 12 }}>{spec.label}</div>
+                      <div style={{ fontSize: 14 }}>{spec.value}</div>
+                    </div>
+                  ))}
                 </div>
                 <div className={styles.actions}>
                   <button className={cx(styles, "check", catalog.compare.includes(product.id) && "on")} onClick={() => catalog.toggleCompare(product.id)}>

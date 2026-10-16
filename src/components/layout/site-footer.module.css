@@ -21,7 +21,7 @@
   text-decoration: none;
 }
 .brand:hover { color: var(--gray-10); text-decoration: none; }
-.mark { width: 24px; height: 24px; background: var(--blue-60); flex: none; }
+.mark { width: 32px; height: 32px; flex: none; }
 .blurb { color: var(--gray-50); line-height: 1.5; }
 .col-title { color: var(--gray-50); font-size: 12px; margin-bottom: 4px; }
 .site-footer a { color: var(--gray-30); }

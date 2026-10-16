@@ -1,17 +1,8 @@
 import type { Article, Product, Project } from "@/types/content";
 
-export const PRODUCT_CATEGORIES = [
-  "Chillers",
-  "VRF / VRV",
-  "Air handling units",
-  "Fan coil units",
-  "Split & cassette",
-  "Ventilation fans",
-  "Ducting & diffusers",
-  "Controls & BMS",
-] as const;
+export const PRODUCT_CATEGORIES = ["Chillers", "VRV / VRF indoor units"] as const;
 
-export const BRANDS = ["Daikin", "LG", "Trane", "Kruger", "DP"] as const;
+export const BRANDS = ["Daikin", "LG", "Dunham-Bush"] as const;
 
 export const APPLICATIONS = [
   "Commercial",
@@ -30,40 +21,58 @@ export const SECTORS = [
   "Data centres",
 ] as const;
 
-const productRows: Array<
-  [string, string, string, string, number, string, string, string[]]
-> = [
-  ["Water-cooled screw chiller", "Trane", "Chillers", "RTWD-250", 880, "kW", "R134a", ["Commercial", "Industrial"]],
-  ["Centrifugal chiller", "Trane", "Chillers", "CVHH-1500", 5275, "kW", "R1233zd", ["Industrial", "Healthcare"]],
-  ["Air-cooled scroll chiller", "Daikin", "Chillers", "EWAT-B", 420, "kW", "R32", ["Commercial"]],
-  ["VRV 5 heat pump", "Daikin", "VRF / VRV", "RXYA-A", 56, "kW", "R32", ["Commercial", "Hospitality"]],
-  ["Multi V i outdoor unit", "LG", "VRF / VRV", "ARUM-LTE6", 67, "kW", "R410A", ["Commercial", "Hospitality"]],
-  ["Modular AHU", "Kruger", "Air handling units", "KAD-12", 12000, "m³/h", "—", ["Healthcare", "Industrial"]],
-  ["Packaged rooftop unit", "Trane", "Air handling units", "Voyager-3", 105, "kW", "R410A", ["Commercial"]],
-  ["Ducted fan coil unit", "Daikin", "Fan coil units", "FWD-AT", 8, "kW", "—", ["Hospitality", "Commercial"]],
-  ["4-way ceiling cassette", "LG", "Split & cassette", "ARNU-TQ", 7, "kW", "R32", ["Commercial", "Hospitality"]],
-  ["Wall-mounted split", "Daikin", "Split & cassette", "FTXM-R", 3.5, "kW", "R32", ["Residential"]],
-  ["Centrifugal inline fan", "Kruger", "Ventilation fans", "KDK-400", 4200, "m³/h", "—", ["Industrial", "Commercial"]],
-  ["Axial wall fan", "Kruger", "Ventilation fans", "KAF-630", 9800, "m³/h", "—", ["Industrial"]],
-  ["Pre-insulated ducting", "DP", "Ducting & diffusers", "PI-20", 0, "", "—", ["Commercial", "Healthcare"]],
-  ["Linear slot diffuser", "DP", "Ducting & diffusers", "LSD-2", 0, "", "—", ["Commercial", "Hospitality"]],
-  ["Central controller", "LG", "Controls & BMS", "AC Smart 5", 0, "", "—", ["Commercial", "Hospitality"]],
-  ["Intelligent Touch Manager", "Daikin", "Controls & BMS", "DCM601", 0, "", "—", ["Commercial"]],
+// [image file, name, condenser, type, summary, applications] — chiller range from the company profile (Dunham-Bush).
+const chillerRows: Array<[string, string, string, string, string, string[]]> = [
+  ["air-cooled-screw-chiller", "Air-cooled screw chiller", "Air-cooled", "Screw", "Screw compressors with air-cooled condensers — no cooling tower needed.", ["Commercial", "Industrial"]],
+  ["absorption-chiller", "Absorption chiller", "Water-cooled", "Absorption", "Heat-driven cooling from hot water, steam or direct firing instead of an electric compressor.", ["Industrial", "Commercial"]],
+  ["water-cooled-centrifugal-chiller", "Water-cooled centrifugal chiller", "Water-cooled", "Centrifugal", "High-capacity centrifugal compressors for large central cooling plants.", ["Commercial", "Healthcare", "Industrial"]],
+  ["modular-air-cooled-chiller", "Modular air-cooled chiller", "Air-cooled", "Modular", "Modules combine to match the load and add capacity as the building grows.", ["Commercial", "Hospitality"]],
+  ["magnetic-bearing-centrifugal-chiller", "Magnetic bearing centrifugal chiller", "Water-cooled", "Magnetic bearing", "Frictionless magnetic bearings for high part-load efficiency and quiet running.", ["Commercial", "Healthcare"]],
+  ["oil-free-magnetic-bearing-chiller", "Oil-free magnetic bearing chiller", "Water-cooled", "Oil-free centrifugal", "Oil-free compressor design that cuts maintenance and keeps heat transfer efficient.", ["Commercial", "Healthcare", "Industrial"]],
+  ["inverter-scroll-chiller", "Inverter scroll chiller", "Air-cooled", "Inverter scroll", "Inverter-driven scroll compressors that follow the load to save energy.", ["Commercial", "Hospitality", "Residential"]],
+  ["water-cooled-horizontal-screw-chiller", "Water-cooled horizontal screw chiller", "Water-cooled", "Screw", "Compact horizontal screw design for plant rooms with a cooling tower.", ["Commercial", "Industrial"]],
+  ["air-cooled-scroll-chiller", "Air-cooled scroll chiller", "Air-cooled", "Scroll", "Scroll compressors in a compact air-cooled package for small to mid-size loads.", ["Commercial", "Residential"]],
 ];
 
-export const products: Product[] = productRows.map(
-  ([name, brand, category, model, capacity, unit, refrigerant, applications], index) => ({
-    id: `p${index}`,
+// [image file, name, mounting, airflow, summary, applications] — VRV indoor units (Daikin).
+const indoorUnitRows: Array<[string, string, string, string, string, string[]]> = [
+  ["ceiling_cassette_round_flow_hd", "Ceiling cassette — round flow", "Ceiling", "360° round flow", "Optional sensing detects people and floor temperature for comfort and energy savings.", ["Commercial", "Hospitality"]],
+  ["ceiling_cassette_double_flow_hd", "Ceiling cassette — double flow", "Ceiling", "Two-way", "Adds a finishing touch to the ceiling with enhanced function and design.", ["Commercial", "Hospitality"]],
+  ["ceiling_duct_hd", "Ceiling duct", "Concealed ceiling", "Ducted", "High/mid external static pressure allows flexible installations.", ["Commercial", "Hospitality"]],
+  ["slim_ceiling_duct_hd", "Slim ceiling duct", "Concealed ceiling", "Ducted", "Slim design, quiet operation and static pressure switching.", ["Hospitality", "Residential"]],
+  ["ceiling_suspended_hd", "Ceiling suspended", "Ceiling", "Wide airflow", "Slim body with quiet and wide airflow.", ["Commercial", "Residential"]],
+  ["wall_mounted_hd", "Wall mounted", "Wall", "Direct", "Stylish flat panel design that harmonises with your interior.", ["Residential", "Hospitality"]],
+  ["floor_standing_hd", "Floor standing", "Floor", "Direct", "Floor-standing cabinet for large open spaces.", ["Commercial", "Industrial"]],
+];
+
+export const products: Product[] = [
+  ...chillerRows.map(([file, name, condenser, type, summary, applications]) => ({
+    id: file,
     name,
-    brand,
-    category,
-    model,
-    capacity,
-    unit,
-    refrigerant,
+    brand: "Dunham-Bush",
+    category: "Chillers",
+    image: `/images/products/chillers/${file}.png`,
+    summary,
+    specs: [
+      { label: "Condenser", value: condenser },
+      { label: "Type", value: type },
+    ] as Product["specs"],
     applications,
-  }),
-);
+  })),
+  ...indoorUnitRows.map(([file, name, mounting, airflow, summary, applications]) => ({
+    id: file,
+    name,
+    brand: "Daikin",
+    category: "VRV / VRF indoor units",
+    image: `/images/products/units/${file}.png`,
+    summary,
+    specs: [
+      { label: "Mounting", value: mounting },
+      { label: "Airflow", value: airflow },
+    ] as Product["specs"],
+    applications,
+  })),
+];
 
 const projectRows: Array<[string, string, string, string, number, string, string]> = [
   ["City Business Tower", "Skyline Developments", "Commercial", "City Centre", 2026, "Daikin VRV", "VRV system across 42 floors with central controls"],

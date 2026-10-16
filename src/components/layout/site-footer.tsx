@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./site-footer.module.css";
 
@@ -7,8 +8,8 @@ export function SiteFooter() {
       <div className={styles.cols}>
         <div className={styles.col}>
           <Link className={styles.brand} href="/">
-            <span className={styles.mark} />
-            Company HVAC
+            <Image className={styles.mark} src="/images/tecnocool_logo.jpeg" alt="" width={32} height={32} />
+            Techno Cool Associates
           </Link>
           <span className={styles.blurb}>Design, supply, installation and maintenance of HVAC systems.</span>
         </div>

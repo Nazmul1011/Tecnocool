@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Placeholder } from "@/components/ui/placeholder";
 import { cx } from "@/lib/cx";
 import type { HomeContent } from "../home.service";
 import styles from "../home.module.css";
@@ -22,7 +22,16 @@ export function HeroCarousel({ slides }: { slides: HomeContent["slides"] }) {
       <div className={styles["hero-track"]} style={{ transform: `translateX(-${index * 100}%)` }}>
         {slides.map((slide, slideIndex) => (
           <div key={slide.title} className={cx(styles, "hero-slide", slideIndex === index && "active")}>
-            <Placeholder label={slide.image} />
+            <div className={styles["hero-media"]}>
+              <Image
+                className={cx(styles, "hero-img", slide.fit)}
+                src={slide.image}
+                alt={slide.alt}
+                fill
+                sizes="100vw"
+                priority={slideIndex === 0}
+              />
+            </div>
             <div className={styles["hero-copy"]}>
               <span className="eyebrow blue">{slide.eyebrow}</span>
               <h1>{slide.title}</h1>
